@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="row">
+  <div class="col-lg-8 mx-auto">
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Decode Hidden Data</h5>
+        <form action="/decode" method="post" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label class="form-label">Stego Image (PNG/JPG/JPEG/BMP)</label>
+            <input class="form-control" type="file" name="stego_image" accept="image/*" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Password (required)</label>
+            <input class="form-control" type="password" name="password" placeholder="Enter password" required>
+          </div>
+          <button class="btn btn-primary" type="submit">Decode</button>
+        </form>
+      </div>
+    </div>
+
+    {% if extracted_text %}
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Decoded Text</h5>
+        <pre class="p-3 bg-light border rounded">{{ extracted_text }}</pre>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if extracted_image %}
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Decoded Image</h5>
+        <img src="{{ url_for('uploaded_file', filename=extracted_image) }}" class="img-fluid rounded border" alt="Decoded Image">
+        <div class="mt-3">
+          <a class="btn btn-outline-secondary" href="{{ url_for('uploaded_file', filename=extracted_image) }}" download>Download Decoded Image</a>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

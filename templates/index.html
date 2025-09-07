@@ -1,0 +1,65 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="row">
+<div class="col-lg-8 mx-auto">
+<div class="card shadow-sm mb-4">
+<div class="card-body">
+<h5 class="card-title">Encode Message / Image</h5>
+<form action="/encode" method="post" enctype="multipart/form-data">
+<div class="mb-3">
+<label class="form-label">Cover Image (PNG/JPG/JPEG/BMP)</label>
+<input class="form-control" type="file" name="cover_image" accept="image/*" required>
+<div class="form-text">Use a sufficiently large image for larger secrets. Output will be PNG.</div>
+</div>
+
+<div class="mb-3">
+<label class="form-label">What do you want to hide?</label>
+<div>
+<div class="form-check form-check-inline">
+<input class="form-check-input" type="radio" name="payload_type" id="typeText" value="text" checked onclick="togglePayloadControls()">
+<label class="form-check-label" for="typeText">Text</label>
+</div>
+<div class="form-check form-check-inline">
+<input class="form-check-input" type="radio" name="payload_type" id="typeImage" value="image" onclick="togglePayloadControls()">
+<label class="form-check-label" for="typeImage">Image</label>
+</div>
+</div>
+</div>
+
+<div id="textBox" class="mb-3">
+<label class="form-label">Secret Text</label>
+<textarea class="form-control" name="secret_text" rows="4" placeholder="Type the secret message..."></textarea>
+</div>
+
+<div id="imageBox" class="mb-3" style="display:none;">
+<label class="form-label">Secret Image</label>
+<input class="form-control" type="file" name="secret_image" accept="image/*">
+</div>
+
+<div class="mb-3">
+<label class="form-label">Password (required)</label>
+<input class="form-control" type="password" name="password" placeholder="Encrypt payload with a password" required>
+<div class="form-text">Password is mandatory. You’ll need it to decode.</div>
+</div>
+
+<button class="btn btn-primary" type="submit">Encode</button>
+</form>
+</div>
+</div>
+
+{% if stego_image %}
+<div class="card shadow-sm">
+<div class="card-body">
+<h5 class="card-title">Result</h5>
+<p class="mb-2">Stego Image (contains hidden data):</p>
+<img src="{{ url_for('uploaded_file', filename=stego_image) }}" class="img-fluid rounded border" alt="Stego Image">
+<div class="mt-3">
+<a class="btn btn-outline-secondary" href="{{ url_for('uploaded_file', filename=stego_image) }}" download>Download Stego Image</a>
+</div>
+</div>
+</div>
+{% endif %}
+</div>
+</div>
+<script>togglePayloadControls();</script>
+{% endblock %}
